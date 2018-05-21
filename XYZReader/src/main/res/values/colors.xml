@@ -19,6 +19,8 @@
     <color name="photo_placeholder">#ccc</color>
 
     <color name="accent">#e040fb</color>
-    <color name="primary">#fd916f</color>
-    <color name="primaryDark">#fd7a50</color>
+    <color name="primary">#ff8a65</color>
+    <color name="primaryDark">#ff7043</color>
+
+    <color name="grey">#808080</color>
 </resources>

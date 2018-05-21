@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/card_margin"
     android:clickable="true"
     android:focusable="true"
@@ -22,7 +23,8 @@
 
         <TextView
             android:id="@+id/article_title"
-            style="@style/TextAppearance.AppCompat.Subhead"
+            style="@style/TitleTextStyle"
+            tools:text="Lorem ipsum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/text_padding"
@@ -31,13 +33,13 @@
 
         <TextView
             android:id="@+id/article_subtitle"
-            style="@style/TextAppearance.AppCompat.Body1"
+            style="@style/SubtitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/text_padding"
             android:paddingEnd="@dimen/text_padding"
             android:paddingBottom="@dimen/text_padding"
-            android:textColor="#6000"
+            tools:text="Lorem ipsum"
             android:maxLines="2"
             android:ellipsize="end" />
     </LinearLayout>
