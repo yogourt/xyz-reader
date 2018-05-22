@@ -18,7 +18,7 @@
 <resources>
     <color name="photo_placeholder">#ccc</color>
 
-    <color name="accent">#e040fb</color>
+    <color name="accent">#ff7043</color>
     <color name="primary">#ff8a65</color>
     <color name="primaryDark">#ff7043</color>
 
