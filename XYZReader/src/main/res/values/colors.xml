@@ -18,10 +18,10 @@
 <resources>
     <color name="photo_placeholder">#ccc</color>
 
-    <color name="accent">#ff7043</color>
-    <color name="primary">#ff8a65</color>
-    <color name="primaryDark">#ff7043</color>
+    <color name="accent">@color/primaryDark</color>
+    <color name="primary">#ff7043</color>
+    <color name="primaryDark">#ff5722</color>
 
-    <color name="darkestOrange">#bf360c</color>
-    <color name="grey">#808080</color>
+    <color name="grey">#424242</color>
+    <color name="grey_semi">#da313131</color>
 </resources>

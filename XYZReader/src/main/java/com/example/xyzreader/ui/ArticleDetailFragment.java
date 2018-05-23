@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.animation.Animator;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
@@ -17,9 +18,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -27,8 +31,11 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -52,7 +59,7 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
-    private int mMutedColor = 0xFF333333;
+    private FloatingActionButton mFab;
 
     private ImageView mPhotoView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -113,10 +120,12 @@ public class ArticleDetailFragment extends Fragment implements
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)
                 mRootView.findViewById(R.id.collapsing_toolbar_layout);
 
+        mFab = (FloatingActionButton) mRootView.findViewById(R.id.share_fab);
 
-        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.app_bar);
+        final Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.app_bar);
         getActivityCast().setSupportActionBar(toolbar);
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
+
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
@@ -125,6 +134,24 @@ public class ArticleDetailFragment extends Fragment implements
                         .getIntent(), getString(R.string.action_share)));
             }
         });
+
+        ((AppBarLayout)mRootView.findViewById(R.id.app_bar_layout)).addOnOffsetChangedListener(
+                new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        if(verticalOffset == -mCollapsingToolbarLayout.getHeight() + toolbar.getHeight()) {
+                            mFab.animate()
+                                    .alpha(0f)
+                                    .setDuration(400)
+                                    .start();
+                        } else {
+                            mFab.animate()
+                                    .alpha(1f)
+                                    .setDuration(400)
+                                    .start();
+                        }
+                    }
+                });
 
         bindViews();
         return mRootView;
@@ -147,12 +174,8 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
-        bylineView.setMovementMethod(new LinkMovementMethod());
+        final TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-
-
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setVisibility(View.VISIBLE);
@@ -164,16 +187,14 @@ public class ArticleDetailFragment extends Fragment implements
                                 publishedDate.getTime(),
                                 System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                                 DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                                + " by "
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
 
             } else {
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                        outputFormat.format(publishedDate) + " by "
+                        + mCursor.getString(ArticleLoader.Query.AUTHOR)));
 
             }
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
@@ -183,11 +204,9 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
-                                mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                mRootView.findViewById(R.id.meta_bar)
-                                        .setBackgroundColor(mMutedColor);
+                                Palette palette = Palette.from(bitmap).generate();
+                                bylineView.setTextColor(palette.getMutedColor(getResources().getColor(R.color.grey)));
                             }
                         }
 
@@ -229,4 +248,14 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home) {
+            Log.d("onOptItSelected", "home selected");
+            getActivityCast().finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
