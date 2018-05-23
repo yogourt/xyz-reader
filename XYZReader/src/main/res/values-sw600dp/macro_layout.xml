@@ -4,4 +4,8 @@
     <dimen name="detail_metabar_vert_padding">32dp</dimen>
     <dimen name="detail_metabar_title_bottom_padding">8dp</dimen>
     <dimen name="detail_body_vert_margin">32dp</dimen>
+    <dimen name="detail_card_max_width">704dp</dimen>
+    <dimen name="app_bar_layout_height">256dp</dimen>
+    <dimen name="detail_app_bar_layout_height">256dp</dimen>
+    <dimen name="list_side_margin">32dp</dimen>
 </resources>

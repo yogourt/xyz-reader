@@ -1,4 +1,6 @@
 <resources>
     <!-- detail -->
     <bool name="detail_is_card">true</bool>
+    <dimen name="list_side_margin">64dp</dimen>
+    <dimen name="app_bar_layout_height">256dp</dimen>
 </resources>

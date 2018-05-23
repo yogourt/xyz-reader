@@ -41,8 +41,7 @@
     </style>
 
     <style name="ExpandedToolbarTextStyle" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:fontFamily">serif-black</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">serif</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/detail_title_text_size</item>
     </style>
