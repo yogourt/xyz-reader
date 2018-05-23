@@ -22,5 +22,6 @@
     <color name="primary">#ff8a65</color>
     <color name="primaryDark">#ff7043</color>
 
+    <color name="darkestOrange">#bf360c</color>
     <color name="grey">#808080</color>
 </resources>
